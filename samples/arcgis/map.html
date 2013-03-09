@@ -5,72 +5,8 @@
   <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
   <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/esri/css/esri.css">
   <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3compact"></script>
-  <script>
-    dojo.require("esri.map");
-    dojo.require("esri.dijit.Popup");
-    var map;
-    var graphic;
-
-    function init() {
-      var options = { 
-        basemap: "gray",
-        center: [-97.7411, 30.2794], // Austin, TX
-        zoom: 16,
-        infoWindow: new esri.dijit.Popup(null, dojo.create("div"))  // Define a popup
-      };
-
-      // Create map
-      map = new esri.Map("mapDiv", options);
-      autoResize(map);
-
-      map.on('load', function(){
-
-        var point = new esri.geometry.Point([
-          -97.741531, // Longitude
-          30.279117   // Latitude
-        ], new esri.SpatialReference({ wkid: 4326 }));
-
-        var symbol = new esri.symbol.PictureMarkerSymbol({
-          angle: 0,
-          xoffset: 0,
-          yoffset: 25,
-          type: "esriPMS",
-          url: "images/large-blue-cutout.png",
-          contentType: "image/png",
-          width: 39,
-          height: 50
-        });
-
-        var attributes = {
-          url: 'http://esri.com/sxsw'
-        };
-
-        infoTemplate = new esri.InfoTemplate("Lavahouse","Read more about the <a href='{url}'>Esri SXSW Lavahouse</a>");
-
-        graphic = new esri.Graphic(point, symbol, attributes, infoTemplate);
-
-        // Add the pin to the map
-        map.graphics.add(graphic);
-      });
-
-    }
-
-    function autoResize(map) {
-      dojo.connect(map, 'onLoad', function (map) {
-        dojo.connect(window, 'resize', map, map.resize);
-      });
-      dojo.connect(map, 'onResize',  function(extent, width, height) { 
-        map.__resizeCenter = map.extent.getCenter();
-        setTimeout(function() {
-          map.centerAt(map.__resizeCenter);
-        }, 200);
-      });
-    }
-
-    dojo.addOnLoad(init); 
-  </script>
   <style type="text/css">
-    html, body, #mapDiv {
+    html, body, #map {
       width: 100%;
       height: 100%;
       margin: 0;
@@ -78,6 +14,61 @@
   </style>
 </head>
 <body>
-  <div id="mapDiv"></div>  
+  <div id="map"></div>
+  <script>
+    dojo.require("esri.map");
+    dojo.require("esri.dijit.Popup");
+
+    var map;
+    var graphic;
+
+    function init() {
+
+      // Make a new map you can set which basemap which different keys like "streets" , "satellite" , "hybrid", "topo", "gray", "oceans", "national-geographic", "osm"
+      map = new esri.Map("map", {
+        basemap: "gray",
+        center: [-97.7411, 30.2794], // Austin, TX
+        zoom: 16,
+        infoWindow: new esri.dijit.Popup(null, dojo.create("div"))  // Define a popup
+      });
+
+      // graphics need to be added after the map loads
+      map.on('load', function(){
+
+        // make a new point
+        var point = new esri.geometry.Point([
+          -97.741531, // Longitude
+          30.279117   // Latitude
+        ]);
+
+        // make a new symbol to represent our point symbols can be reused
+        var symbol = new esri.symbol.PictureMarkerSymbol({
+          xoffset: 0,
+          yoffset: 25,
+          url: "images/large-blue-cutout.png",
+          contentType: "image/png",
+          width: 39,
+          height: 50
+        });
+
+        // you can assign custom attributes to graphic on a map
+        var attributes = {
+          url: 'http://esri.com/sxsw'
+        };
+
+        // and a custom template for a popup you can use {{attributeName}} to do simple string replacement
+        var infoTemplate = new esri.InfoTemplate("Lavahouse","Read more about the <a href='{url}'>Esri SXSW Lavahouse</a>");
+
+        // make a new graphic that combines our point a symbol, custom attributes and a popup template
+        graphic = new esri.Graphic(point, symbol, attributes, infoTemplate);
+
+        // Add the pin to the map
+        map.graphics.add(graphic);
+      });
+
+    }
+    // run the init function when the DOM is ready.
+    dojo.ready(init);
+  </script>
 </body>
 </html>
