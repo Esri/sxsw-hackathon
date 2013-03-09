@@ -1,8 +1,83 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>ArcGIS Map</title>
-  </head>
-  <body>
-  </body>
+<head>
+  <title>ArcGIS Map</title>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+  <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/esri/css/esri.css">
+  <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3compact"></script>
+  <script>
+    dojo.require("esri.map");
+    dojo.require("esri.dijit.Popup");
+    var map;
+    var graphic;
+
+    function init() {
+      var options = { 
+        basemap: "gray",
+        center: [-97.7411, 30.2794], // Austin, TX
+        zoom: 16,
+        infoWindow: new esri.dijit.Popup(null, dojo.create("div"))  // Define a popup
+      };
+
+      // Create map
+      map = new esri.Map("mapDiv", options);
+      autoResize(map);
+
+      map.on('load', function(){
+
+        var point = new esri.geometry.Point([
+          -97.741531, // Longitude
+          30.279117   // Latitude
+        ], new esri.SpatialReference({ wkid: 4326 }));
+
+        var symbol = new esri.symbol.PictureMarkerSymbol({
+          angle: 0,
+          xoffset: 0,
+          yoffset: 25,
+          type: "esriPMS",
+          url: "images/large-blue-cutout.png",
+          contentType: "image/png",
+          width: 39,
+          height: 50
+        });
+
+        var attributes = {
+          url: 'http://esri.com/sxsw'
+        };
+
+        infoTemplate = new esri.InfoTemplate("Lavahouse","Read more about the <a href='{url}'>Esri SXSW Lavahouse</a>");
+
+        graphic = new esri.Graphic(point, symbol, attributes, infoTemplate);
+
+        // Add the pin to the map
+        map.graphics.add(graphic);
+      });
+
+    }
+
+    function autoResize(map) {
+      dojo.connect(map, 'onLoad', function (map) {
+        dojo.connect(window, 'resize', map, map.resize);
+      });
+      dojo.connect(map, 'onResize',  function(extent, width, height) { 
+        map.__resizeCenter = map.extent.getCenter();
+        setTimeout(function() {
+          map.centerAt(map.__resizeCenter);
+        }, 200);
+      });
+    }
+
+    dojo.addOnLoad(init); 
+  </script>
+  <style type="text/css">
+    html, body, #mapDiv {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="mapDiv"></div>  
+</body>
 </html>
