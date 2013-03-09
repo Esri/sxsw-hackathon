@@ -1,8 +1,115 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Leaflet Directions</title>
-  </head>
-  <body>
-  </body>
+<head>
+  <title>Leaflet Map</title>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="leaflet.css" />
+  <script src="leaflet.js"></script>
+
+  <!-- jQuery -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+  <!-- Terraformer - to convert ArcGIS objects to GeoJSON https://github.com/Esri/Terraformer -->
+  <script src="https://raw.github.com/Esri/Terraformer/master/dist/browser/terraformer.js"></script>
+  <script src="https://raw.github.com/Esri/Terraformer/master/dist/browser/arcgis.js"></script>
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script>
+  // create a map in the "map" div, set the view to a given place and zoom
+  var map = L.map('map').setView([30.279117, -97.741531], 15);
+  var startMarker, endMarker, route;
+  markers = 0;
+
+  var tiles = {
+    topo: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+    streets: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
+    satellite: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    gray: 'http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+  };
+
+  // add an Esri map tile layer
+  var startIcon = L.icon({
+    iconUrl: 'images/large-green-cutout.png',
+    iconSize: [39, 50],
+    iconAnchor: [19, 50],
+    popupAnchor: [0, -50]
+  });
+
+  var endIcon = L.icon({
+    iconUrl: 'images/large-red-cutout.png',
+    iconSize: [39, 50],
+    iconAnchor: [19, 50],
+    popupAnchor: [0, -50]
+  });
+
+  L.tileLayer(tiles.topo, {
+    maxZoom: 18,
+    attribution: 'Map data powered by <a href="http://esri.com">Esri</a>'
+  }).addTo(map);
+
+  map.on("click", function(evt) {
+    console.log("click", startMarker, endMarker);
+    if(startMarker && endMarker){
+      //remove markers from map
+      map.removeLayer(startMarker);
+      map.removeLayer(endMarker);
+      map.removeLayer(route);
+      markers = 0;
+      startMarker = endMarker = undefined;
+    }
+
+    // add a marker in the given location, attach some popup content to it and open the popup
+    if(markers === 0){
+      startMarker = L.marker(evt.latlng, {icon: startIcon})
+        .addTo(map)
+        .bindPopup('Start');
+      markers++;
+    } else if(markers === 1){
+      // add an end market to the map
+      endMarker = L.marker(evt.latlng, {icon: endIcon})
+        .addTo(map)
+        .bindPopup('End');
+      markers++;
+    }
+
+    if(startMarker && endMarker){
+      //remove markers from map
+      startLatLng = startMarker.getLatLng();
+      endLatLng = endMarker.getLatLng();
+      $.getJSON("http://tasks.arcgisonline.com/ArcGIS/rest/services/NetworkAnalysis/ESRI_Route_NA/NAServer/Route/solve?callback=?", {
+        stops: startLatLng.lng+","+startLatLng.lat+"; "+endLatLng.lng+","+endLatLng.lat+";",
+        f: "json",
+        returnDirections: true
+      }, function(response){
+        window.response =response;
+        // parse the arcgsi geometry into GeoJSON
+        // in order to parse the arcgis data terraformer needs to know how the data if formateed
+        // so we can tell it the spatial reference is 4326 or LatLng.
+        response.routes.features[0].geometry.spatialReference = { wkid:4326 };
+
+        // make a geojson object representing our route
+        var geojson = Terraformer.ArcGIS.parse(response.routes.features[0].geometry);
+
+        // add the GeoJSON to the map with Leaflet
+        route = L.geoJson(geojson, {}).addTo(map);
+
+        // print driving directions to console
+        for (var i = 0; i < response.directions[0].features.length; i++) {
+          console.log(response.directions[0].features[i].attributes.text);
+        };
+      });
+    }
+  });
+  </script>
+</body>
 </html>
