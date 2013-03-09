@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <link href='style.css' rel='stylesheet' type='text/css' />
+    <script src='big.js'></script>
+    <script src='showdown.js'></script>
+  </head>
+  <body>
+!["Esri"](img/esri.png "background")
+
+# The Data!
+[Austin Open Data](https://data.austintexas.gov/)
+
+# Lots of Data!
+* [Unclaimed Property](https://data.austintexas.gov/Financial/Unclaimed-Property/h3i4-5e5v)
+* [Restaurant Inspection Scores](https://data.austintexas.gov/dataset/Restaurant-Inspection-Scores/ecmv-9xxi)
+* [Water Quality](https://data.austintexas.gov/Environmental/Water-Quality-Sampling-Data/5tye-7ray)
+* [Bike Rack Requests](https://data.austintexas.gov/Transportation/Bicycle-Rack-Requests/5tx2-pk4n)
+* And More&hellip;
+
+# Put It On A Map!
+* [ArcGIS](/samples/arcgis/map.html)
+* [Leaflet](/samples/leaflet/map.html)
+
+# Get Some Directions!
+* [ArcGIS](/samples/arcgis/directions.html)
+* [jQuery and Leaflet](/samples/arcgis/directions.html)
+
+# Thanks!
+
+  </body>
+  <script>
+  var converter = new Showdown.converter();
+  var slides = document.body.innerHTML.split("\n\n");
+  document.body.innerHTML = "";
+  for(var i=0; i<slides.length-1; i++) {
+    console.log(i);
+    document.body.innerHTML += "<div>" + converter.makeHtml(slides[i]) + "</div>";
+  }
+  </script>
+</html>
