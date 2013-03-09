@@ -1,8 +1,49 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Leaflet Map</title>
-  </head>
-  <body>
-  </body>
+<head>
+  <title>Leaflet Map</title>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+  <link rel="stylesheet" href="leaflet.css" />
+  <script src="leaflet.js"></script>
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script>
+  // create a map in the "map" div, set the view to a given place and zoom
+  var map = L.map('map').setView([30.279117, -97.741531], 15);
+
+  var tiles = {
+    topo: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+    streets: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
+    satellite: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    gray: 'http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+  };
+
+  // add an Esri map tile layer
+  var myIcon = L.icon({
+    iconUrl: 'images/large-purple-cutout.png',
+    iconSize: [39, 50],
+    iconAnchor: [19, 50],
+    popupAnchor: [0, -50]
+  });
+
+  L.tileLayer(tiles.topo, {
+    maxZoom: 18,
+    attribution: 'Map data powered by <a href="http://esri.com">Esri</a>'
+  }).addTo(map);
+
+  // add a marker in the given location, attach some popup content to it and open the popup
+  L.marker([30.279117, -97.741531], {icon: myIcon})
+    .addTo(map)
+    .bindPopup('A pretty CSS3 popup. <br> Easily customizable.');
+
+  </script>
+</body>
 </html>
