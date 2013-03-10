@@ -20,12 +20,12 @@ Check the `samples` folder for code samples written using the ArcGIS SDK for Jav
 ### ArcGIS SDK for Javascript
 * [Maps](http://esri.github.com/sxsw-hackathon/samples/arcgis/map.html)
 * [Directions](http://esri.github.com/sxsw-hackathon/samples/arcgis/directions.html)
-* [Geocoding](http://esri.github.com/sxsw-hackathon/samples/arcgis/geocoding.html)
+* [Geocoding](http://esri.github.com/sxsw-hackathon/samples/arcgis/geocode.html)
 
 ### Leaflet
 * [Maps](http://esri.github.com/sxsw-hackathon/samples/leaflet/map.html)
 * [Directions](http://esri.github.com/sxsw-hackathon/samples/leaflet/directions.html)
-* [Geocoding](http://esri.github.com/sxsw-hackathon/samples/leaflet/geocoding.html)
+* [Geocoding](http://esri.github.com/sxsw-hackathon/samples/leaflet/geocode.html)
 
 ## Terraformer
 Convert data between WKT,<br>ArcGIS JSON, and GeoJSON. [Github](https://github.com/esri/Terraformer)
