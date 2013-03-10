@@ -13,8 +13,7 @@
 * [Dangerous Dogs](https://data.austintexas.gov/Public-Safety/Declared-Dangerous-Dogs/ykw4-j3aj)
 * [Court Violations](https://data.austintexas.gov/Public-Safety/Municipal-Court-Violation-Location/8jyt-x94k)
 * And More&hellip;
-* 
-* 
+
 ## Feature Services
 If you want to use some of the auston data as ArcGIS Feature Service you can use the following service URLS...
 
