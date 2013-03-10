@@ -23,6 +23,7 @@ If you want to use some of the auston data as ArcGIS Feature Service you can use
 
 * [Fire Stations](http://esri23.maps.arcgis.com/home/item.html?id=b6091b9e9e184e2fafd016132412537a)
 * [Restaurant Inspections](http://esri23.maps.arcgis.com/home/item.html?id=324daed7e2b847c7b0aa1781be924e1e)
+* [Dangerous Dogs](http://esri23.maps.arcgis.com/home/webmap/viewer.html?webmap=101901d5e4a24a4d872cf73de736a97a)
 
 ## Sample Code
 Check the `samples` folder for code samples written using the ArcGIS SDK for Javascript or Leaflet
