@@ -2,6 +2,10 @@
 
 [Opening Presentation](http://esri.github.com/sxsw-hackathon)
 
+## Wireless Connection!
+Name: Plazzo Lavaca
+Pass: 1614lavaca
+
 ## The Data!
 
 [Austin Open Data](https://data.austintexas.gov/)
