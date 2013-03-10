@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=7,IE=9">
+    <!--The viewport meta tag is used to improve the presentation and behavior of the samples
+      on iOS devices-->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>Find Address</title>
+
+    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/dojo/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/esri/css/esri.css">
+    <style>
+      html, body, {
+        height: 100%; width: 100%;
+        margin: 0; padding: 0;
+      }
+      #map{ 
+        float:right;
+        width: 80%;
+        height: 100%;
+      }
+
+      #left {
+        float:left;
+        width: 20%;
+        height: 100%;
+      }
+     </style>
+
+    <script>var dojoConfig = { parseOnLoad: true };</script>
+    <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/"></script>
+    <script>
+      dojo.require("esri.map");
+      dojo.require("esri.tasks.locator");
+      dojo.require("dojo.number");
+
+      var map, locator;
+
+      function init() {
+        map = new esri.Map("map", {
+          basemap: "streets",
+          center: [-93.5, 41.431],
+          zoom: 5
+        });
+
+        locator = new esri.tasks.Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
+
+        map.infoWindow.resize(200,125);
+      }
+
+      function locate() {
+        map.graphics.clear();
+        var options = {
+          address: {
+            "SingleLine":dojo.byId("address").value
+          },
+        }
+        locator.addressToLocations(options).then(showResults);
+      }
+
+      function showResults(candidates) {
+        var candidate;
+        var symbol = new esri.symbol.SimpleMarkerSymbol();
+        var infoTemplate = new esri.InfoTemplate("Location", "Address: ${address}<br />Score: ${score}<br />Source locator: ${locatorName}");
+
+        symbol.setStyle(esri.symbol.SimpleMarkerSymbol.STYLE_SQUARE);
+        symbol.setColor(new dojo.Color([153,0,51,0.75]));
+
+        var geom;
+
+        for (var i = 0; i < candidates.length; i++) {
+          console.log(candidates[i].score);
+          if (candidates[i].score > 80) {
+            console.log(candidates[i].location);
+            var attributes = { address: candidates[i].address, score:candidates[i].score, locatorName:candidates[i].attributes.Loc_name };
+            geom = candidates[i].location;
+            var graphic = new esri.Graphic(geom, symbol, attributes, infoTemplate);
+            //add a graphic to the map at the geocoded location
+            map.graphics.add(graphic);
+            //add a text symbol to the map listing the location of the matched address.
+            var displayText = candidates[i].address;
+            var font = new esri.symbol.Font("16pt",esri.symbol.Font.STYLE_NORMAL, esri.symbol.Font.VARIANT_NORMAL,esri.symbol.Font.WEIGHT_BOLD,"Helvetica");
+
+            var textSymbol = new esri.symbol.TextSymbol(displayText,font,new dojo.Color("#666633"));
+            textSymbol.setOffset(0,8);
+            map.graphics.add(new esri.Graphic(geom, textSymbol));
+            return false; //break out of loop after one candidate with score greater  than 80 is found.
+          }
+        };
+        if(geom !== undefined){
+          map.centerAndZoom(geom,12);
+        }
+
+      }
+      dojo.ready(init);
+    </script>
+  </head>
+  <body>
+    <div id="main">
+
+      <div id="left">
+        <textarea id="address"/>380 New York St, Redlands</textArea>
+        <button id="button" onclick="locate()">Geocode</button>
+      </div>
+      <div id="map">
+      </div>
+    </div>
+  </body>
+</html>

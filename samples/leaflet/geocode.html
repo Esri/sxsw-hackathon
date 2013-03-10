@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Leaflet Map</title>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="leaflet.css" />
+  <script src="leaflet.js"></script>
+
+  <!-- jQuery -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+  <!-- Terraformer - to convert ArcGIS objects to GeoJSON https://github.com/Esri/Terraformer -->
+  <script src="https://raw.github.com/Esri/Terraformer/master/dist/browser/terraformer.js"></script>
+  <script src="https://raw.github.com/Esri/Terraformer/master/dist/browser/arcgis.js"></script>
+  <style>
+    html, body, #main {
+      height: 100%; width: 100%;
+      margin: 0; padding: 0;
+    }
+    #map{ 
+      float:right;
+      width: 80%;
+      height: 100%;
+    }
+
+    #left {
+      float:left;
+      width: 20%;
+      height: 100%;
+    }
+   </style>
+</head>
+<body>
+  <div id="main">
+    <div id="left">
+      <textarea id="address"/>380 New York St, Redlands</textArea>
+      <button id="button" onclick="locate()">Geocode</button>
+    </div>
+    <div id="map"></div>
+  </div>
+  <script>
+  // create a map in the "map" div, set the view to a given place and zoom
+  var map = L.map('map').setView([30.279117, -97.741531], 15);
+  var startMarker, endMarker, route;
+  markers = 0;
+
+  var tiles = {
+    topo: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+    streets: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
+    satellite: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    gray: 'http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+  };
+
+
+  var icon = L.icon({
+    iconUrl: 'images/large-green-cutout.png',
+    iconSize: [39, 50],
+    iconAnchor: [19, 50],
+    popupAnchor: [0, -50]
+  });
+
+  // add an Esri map tile layer
+  L.tileLayer(tiles.topo, {
+    maxZoom: 18,
+    attribution: 'Map data powered by <a href="http://esri.com">Esri</a>'
+  }).addTo(map);
+
+  function locate(evt) {
+    $.getJSON("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?callback=?", {
+      SingleLine: $("#address").val(),
+      f: "json"
+    }, function(response){
+      lng = response.candidates[0].location.x
+      lat = response.candidates[0].location.y
+      map.panTo([lat, lng]);
+      L.marker([lat, lng], {icon:icon}).addTo(map);
+      for (var i = 0; i < response.candidates.length; i++) {
+        console.log(response.candidates[i]);
+      };
+    });
+  }
+  </script>
+</body>
+</html>
