@@ -3,8 +3,8 @@
 [Opening Presentation](http://esri.github.com/sxsw-hackathon)
 
 ## Wireless Connection!
-Name: Plazzo Lavaca
-Pass: 1614lavaca
+* Name: Plazzo Lavaca
+* Pass: 1614lavaca
 
 ## The Data!
 
