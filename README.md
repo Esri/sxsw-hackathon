@@ -1,6 +1,6 @@
 # SXSW Hackathon
 
-[Opening Presentation](http://esri.com/sxsw-hackathon)
+[Opening Presentation](http://esri.github.com/sxsw-hackathon)
 
 ## The Data!
 
