@@ -13,6 +13,13 @@
 * [Dangerous Dogs](https://data.austintexas.gov/Public-Safety/Declared-Dangerous-Dogs/ykw4-j3aj)
 * [Court Violations](https://data.austintexas.gov/Public-Safety/Municipal-Court-Violation-Location/8jyt-x94k)
 * And More&hellip;
+* 
+* 
+## Feature Services
+If you want to use some of the auston data as ArcGIS Feature Service you can use the following service URLS...
+
+[Fire Stations](http://esri23.maps.arcgis.com/home/item.html?id=b6091b9e9e184e2fafd016132412537a)
+[Restaurant Inspections](http://esri23.maps.arcgis.com/home/item.html?id=324daed7e2b847c7b0aa1781be924e1e)
 
 ## Sample Code
 Check the `samples` folder for code samples written using the ArcGIS SDK for Javascript or Leaflet
@@ -33,5 +40,3 @@ Convert data between WKT,<br>ArcGIS JSON, and GeoJSON. [Github](https://github.c
 ## Story Maps
 Templates from ESRI for displaying<br> configurable maps and data services. [Story Maps](http://storymaps.esri.com/home/)
 
-## Feature Services
-If you want to use some of the auston data as ArcGIS Feature Service you can use the following service URLS...
