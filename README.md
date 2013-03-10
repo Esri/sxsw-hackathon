@@ -18,14 +18,14 @@
 Check the `samples` folder for code samples written using the ArcGIS SDK for Javascript or Leaflet
 
 ### ArcGIS SDK for Javascript
-* [Maps](http://esri.com/sxsw-hackathon/samples/arcgis/map.html)
-* [Directions](http://esri.com/sxsw-hackathon/samples/arcgis/directions.html)
-* [Geocoding](http://esri.com/sxsw-hackathon/samples/arcgis/geocoding.html)
+* [Maps](http://esri.github.com/sxsw-hackathon/samples/arcgis/map.html)
+* [Directions](http://esri.github.com/sxsw-hackathon/samples/arcgis/directions.html)
+* [Geocoding](http://esri.github.com/sxsw-hackathon/samples/arcgis/geocoding.html)
 
 ### Leaflet
-* [Maps](http://esri.com/sxsw-hackathon/samples/leaflet/map.html)
-* [Directions](http://esri.com/sxsw-hackathon/samples/leaflet/directions.html)
-* [Geocoding](http://esri.com/sxsw-hackathon/samples/leaflet/geocoding.html)
+* [Maps](http://esri.github.com/sxsw-hackathon/samples/leaflet/map.html)
+* [Directions](http://esri.github.com/sxsw-hackathon/samples/leaflet/directions.html)
+* [Geocoding](http://esri.github.com/sxsw-hackathon/samples/leaflet/geocoding.html)
 
 ## Terraformer
 Convert data between WKT,<br>ArcGIS JSON, and GeoJSON. [Github](https://github.com/esri/Terraformer)
